@@ -1,0 +1,87 @@
+/* Форма рецепта */
+.recipe-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.recipe-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.recipe-form .invalid-feedback {
+    display: block;
+    color: #dc3545;
+}
+
+/* Превью изображения */
+.image-preview-wrapper {
+    text-align: center;
+}
+
+.img-preview {
+    max-width: 100%;
+    max-height: 300px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    object-fit: contain;
+}
+
+.image-delete-checkbox {
+    margin-top: 0.5rem;
+}
+
+/* Секция ингредиентов */
+.ingredient-forms-wrapper {
+    margin-bottom: 1rem;
+}
+
+.ingredient-form {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.delete-ingredient-checkbox {
+    margin-top: 0.5rem;
+}
+
+.add-ingredient-btn {
+    margin-top: 0.5rem;
+}
+
+/* Кнопки формы */
+.form-actions {
+    margin-top: 2rem;
+}
+
+.submit-btn, .cancel-btn {
+    min-width: 150px;
+}
+
+/* Стили для изображений рецептов */
+.recipe-image {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
+
+.card-img-top.recipe-image {
+    max-height: 200px;
+    width: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .timing-row .col-md-4 {
+        margin-bottom: 1rem;
+    }
+    
+    .ingredient-row .col-md-6 {
+        margin-bottom: 1rem;
+    }
+}
