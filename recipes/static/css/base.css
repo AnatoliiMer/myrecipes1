@@ -1,0 +1,287 @@
+/* Основные стили сайта */
+body {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)), 
+                     url('../images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    padding-top: 80px; /* Увеличенный отступ для навигации */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Навигационная панель - полностью переработанная */
+.navbar {
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    background-color: #343a40 !important;
+    height: 80px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    padding: 0 1rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    margin: 0 0.3rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Специальные стили для кнопок в навигации */
+.navbar .btn {
+    padding: 0.5rem 1.2rem;
+    margin-left: 0.5rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.navbar .btn-outline-light {
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.9);
+    background-color: transparent;
+}
+
+.navbar .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-color: #fff;
+    transform: translateY(-2px);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #ff6f61 !important;
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+    margin-right: 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #ff4a3d !important;
+}
+
+/* Кнопка бургер-меню */
+.navbar-toggler {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    width: 1.2em;
+    height: 1.2em;
+}
+
+/* Контейнеры */
+.container {
+    background-color: rgba(255, 255, 255, 0.88);
+    border-radius: 12px;
+    padding: 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Карточки */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 25px;
+    border: none;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.95);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Анимации */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Кнопки */
+.btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #ff6f61;
+    border-color: #ff6f61;
+}
+
+.btn-primary:hover {
+    background-color: #ff4a3d;
+    border-color: #ff4a3d;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Изображения */
+.recipe-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+.recipe-image:hover {
+    transform: scale(1.03);
+}
+
+/* Формы */
+.form-control {
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+}
+
+.form-control:focus {
+    border-color: #ff6f61;
+    box-shadow: 0 0 0 0.25rem rgba(255, 111, 97, 0.25);
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .navbar-collapse {
+        background-color: #343a40;
+        padding: 1rem;
+        border-radius: 0 0 8px 8px;
+        margin-top: 0.5rem;
+    }
+    
+    .navbar-nav {
+        padding-top: 0.5rem;
+    }
+    
+    .navbar .nav-link,
+    .navbar .btn {
+        margin: 0.3rem 0;
+        padding: 0.7rem 1rem !important;
+        width: 100%;
+        text-align: left;
+    }
+    
+    .navbar .btn {
+        margin-left: 0;
+        display: block;
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.96)), 
+                         url('../images/background-mobile.jpg');
+        padding-top: 70px;
+    }
+    
+    .navbar {
+        height: 70px;
+        padding: 0 0.5rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    .navbar-toggler {
+        padding: 0.4rem;
+    }
+}
+
+/* Утилиты */
+.shadow-soft {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+.text-accent {
+    color: #ff6f61;
+}
+
+/* Сообщения */
+.alert {
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 20px;
+}
+
+/* Хлебные крошки */
+.breadcrumb {
+    background-color: transparent;
+    padding: 0.5rem 0;
+    margin-top: 10px;
+}
+
+.breadcrumb-item a {
+    color: #ff6f61;
+    text-decoration: none;
+}

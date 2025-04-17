@@ -1,0 +1,13 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Оценить рецепт</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-warning">Оценить</button>
+        <a href="{% url 'recipe_detail' pk=recipe.pk %}" class="btn btn-secondary">Назад</a>
+    </form>
+</div>
+{% endblock %}

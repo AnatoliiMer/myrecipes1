@@ -1,0 +1,284 @@
+﻿{% extends 'recipes/base.html' %}
+{% load static i18n %}
+
+{% block content %}
+<div class="container recipe-form-container">
+    <h1 class="mb-4 animate-on-scroll">
+        {% if form.instance.pk %}
+            {% trans "Редактировать рецепт" %}
+        {% else %}
+            {% trans "Добавить рецепт" %}
+        {% endif %}
+    </h1>
+    
+    <form method="post" enctype="multipart/form-data" class="animate-on-scroll recipe-form" id="recipe-form">
+        {% csrf_token %}
+        
+        <!-- Основная информация -->
+        <div class="card mb-4 recipe-main-info">
+            <div class="card-body">
+                <h2 class="card-title mb-4">{% trans "Основная информация" %}</h2>
+                
+                <!-- Превью изображения -->
+                {% if form.instance.image %}
+                    <div class="image-preview-wrapper mb-3">
+                        <div class="recipe-image-preview-container">
+                            <img src="{{ form.instance.image.url }}" class="img-preview" loading="lazy" alt="{% trans 'Текущее изображение рецепта' %}" id="image-preview">
+                        </div>
+                        <div class="form-check image-delete-checkbox">
+                            <input type="checkbox" name="image-clear" id="image-clear" class="form-check-input">
+                            <label for="image-clear" class="form-check-label">{% trans "Удалить изображение" %}</label>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <!-- Поля формы -->
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="invalid-feedback">{{ form.title.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="invalid-feedback">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="row timing-row">
+                    <div class="col-md-4 form-group">
+                        <label for="{{ form.preparation_time.id_for_label }}" class="form-label">{{ form.preparation_time.label }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                            {{ form.preparation_time }}
+                        </div>
+                        {% if form.preparation_time.errors %}
+                            <div class="invalid-feedback">{{ form.preparation_time.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-4 form-group">
+                        <label for="{{ form.cooking_time.id_for_label }}" class="form-label">{{ form.cooking_time.label }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                            {{ form.cooking_time }}
+                        </div>
+                        {% if form.cooking_time.errors %}
+                            <div class="invalid-feedback">{{ form.cooking_time.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-4 form-group">
+                        <label for="{{ form.servings.id_for_label }}" class="form-label">{{ form.servings.label }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-utensils"></i></span>
+                            {{ form.servings }}
+                        </div>
+                        {% if form.servings.errors %}
+                            <div class="invalid-feedback">{{ form.servings.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.categories.id_for_label }}" class="form-label">{{ form.categories.label }}</label>
+                    {{ form.categories }}
+                    {% if form.categories.errors %}
+                        <div class="invalid-feedback">{{ form.categories.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.image.id_for_label }}" class="form-label">{{ form.image.label }}</label>
+                    <input type="file" name="image" class="form-control" id="id_image" accept="image/*" onchange="previewImage(this)">
+                    {% if form.image.errors %}
+                        <div class="invalid-feedback">{{ form.image.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Ингредиенты -->
+        <div class="card mb-4 ingredients-section">
+            <div class="card-body">
+                <h2 class="card-title mb-4"><i class="fas fa-list"></i> {% trans "Ингредиенты" %}</h2>
+                {{ formset.management_form }}
+                <div id="ingredient-forms" class="ingredient-forms-wrapper">
+                    {% for form in formset %}
+                        <div class="ingredient-form mb-3">
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <div class="row ingredient-row">
+                                <div class="col-md-6 form-group">
+                                    <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-list"></i></span>
+                                        {{ form.name }}
+                                    </div>
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback">{{ form.name.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="{{ form.quantity.id_for_label }}" class="form-label">{{ form.quantity.label }}</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                        {{ form.quantity }}
+                                    </div>
+                                    {% if form.quantity.errors %}
+                                        <div class="invalid-feedback">{{ form.quantity.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if form.DELETE %}
+                                <div class="form-check delete-ingredient-checkbox">
+                                    {{ form.DELETE }}
+                                    <label for="{{ form.DELETE.id_for_label }}" class="form-check-label">{% trans "Удалить ингредиент" %}</label>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <button type="button" id="add-ingredient" class="btn btn-outline-primary add-ingredient-btn">
+                    <i class="fas fa-plus"></i> {% trans "Добавить ингредиент" %}
+                </button>
+            </div>
+        </div>
+
+        <!-- Описание приготовления -->
+        <div class="card mb-4 cooking-instructions">
+            <div class="card-body">
+                <h2 class="card-title mb-4"><i class="fas fa-list-ol"></i> {% trans "Процесс приготовления" %}</h2>
+                <div class="form-group">
+                    <label for="{{ form.cooking_instructions.id_for_label }}" class="form-label">{{ form.cooking_instructions.label }}</label>
+                    <textarea name="cooking_instructions" id="id_cooking_instructions" class="form-control" rows="10" 
+                              placeholder="{% trans 'Подробно опишите шаги приготовления...' %}">{{ form.cooking_instructions.value|default_if_none:'' }}</textarea>
+                    {% if form.cooking_instructions.errors %}
+                        <div class="invalid-feedback">{{ form.cooking_instructions.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-text text-muted">
+                    <small>{% trans "Можно использовать маркированные списки (через - или *) или нумерованные (1., 2.)" %}</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="form-actions d-flex justify-content-between">
+            <button type="submit" class="btn btn-success submit-btn">
+                <i class="fas fa-save"></i> {% trans "Сохранить рецепт" %}
+            </button>
+            <a href="{% if form.instance.pk %}{% url 'recipe_detail' form.instance.pk %}{% else %}{% url 'recipe_list' %}{% endif %}" class="btn btn-secondary cancel-btn">
+                <i class="fas fa-arrow-left"></i> {% trans "Отменить изменения" %}
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .recipe-image-preview-container {
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .img-preview {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    /* Стили для поля описания приготовления */
+    #id_cooking_instructions {
+        min-height: 200px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/recipe_form.js' %}"></script>
+<script>
+    // Функция предпросмотра изображения
+    function previewImage(input) {
+        const preview = document.getElementById('image-preview');
+        const file = input.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        }
+        
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Добавление нового ингредиента
+    document.getElementById('add-ingredient').addEventListener('click', function() {
+        const formCount = document.getElementById('id_ingredients-TOTAL_FORMS');
+        const formsContainer = document.getElementById('ingredient-forms');
+        const newForm = formsContainer.children[0].cloneNode(true);
+        const formRegex = /ingredients-(\d+)-/g;
+        
+        // Обновляем индексы в форме
+        const newIndex = parseInt(formCount.value);
+        newForm.innerHTML = newForm.innerHTML.replace(formRegex, `ingredients-${newIndex}-`);
+        
+        // Очищаем значения
+        const inputs = newForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (input.type !== 'hidden' && !input.name.includes('DELETE')) {
+                input.value = '';
+            }
+        });
+        
+        // Добавляем новую форму
+        formsContainer.appendChild(newForm);
+        formCount.value = newIndex + 1;
+    });
+
+    // Валидация формы перед отправкой
+    document.getElementById('recipe-form').addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        // Проверка обязательных полей
+        const requiredFields = this.querySelectorAll('[required]');
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            }
+        });
+        
+        // Проверка хотя бы одного ингредиента
+        const ingredientCount = document.getElementById('id_ingredients-TOTAL_FORMS').value;
+        if (parseInt(ingredientCount) < 1) {
+            alert('{% trans "Добавьте хотя бы один ингредиент" %}');
+            isValid = false;
+        }
+        
+        // Проверка описания приготовления
+        const cookingInstructions = document.getElementById('id_cooking_instructions');
+        if (!cookingInstructions.value.trim()) {
+            cookingInstructions.classList.add('is-invalid');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('{% trans "Пожалуйста, заполните все обязательные поля" %}');
+        }
+    });
+</script>
+{% endblock %}

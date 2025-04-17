@@ -1,0 +1,95 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="mb-4 text-center">Регистрация</h1>
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <!-- Отображение ошибок формы -->
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Ошибка!</strong> Пожалуйста, исправьте следующие ошибки:
+                        <ul>
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <!-- Поле для имени пользователя -->
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Имя пользователя</label>
+                    <input type="text" name="username" id="id_username" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, введите имя пользователя.
+                    </div>
+                </div>
+
+                <!-- Поле для email -->
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email</label>
+                    <input type="email" name="email" id="id_email" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, введите корректный email.
+                    </div>
+                </div>
+
+                <!-- Поле для пароля -->
+                <div class="mb-3">
+                    <label for="id_password1" class="form-label">Пароль</label>
+                    <input type="password" name="password1" id="id_password1" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, введите пароль.
+                    </div>
+                </div>
+
+                <!-- Поле для подтверждения пароля -->
+                <div class="mb-3">
+                    <label for="id_password2" class="form-label">Подтверждение пароля</label>
+                    <input type="password" name="password2" id="id_password2" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Пожалуйста, подтвердите пароль.
+                    </div>
+                </div>
+
+                <!-- Кнопка отправки формы -->
+                <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                
+                <!-- Ссылка на страницу входа -->
+                <div class="mt-3 text-center">
+                    <a href="{% url 'login' %}" class="btn btn-link">Уже есть аккаунт? Войти</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Валидация формы
+(function () {
+    'use strict'
+
+    // Получаем все формы, к которым нужно применить кастомные стили валидации Bootstrap
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Проходим по формам и предотвращаем отправку, если форма не валидна
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+</script>
+{% endblock %}

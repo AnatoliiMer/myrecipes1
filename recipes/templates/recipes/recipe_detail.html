@@ -1,0 +1,135 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- Заголовок рецепта -->
+    <h1 class="mb-4 animate-on-scroll">{{ recipe.title }}</h1>
+    <!-- Кнопка "Редактировать" для автора рецепта -->
+    {% if user.is_authenticated and user == recipe.author %}
+        <div class="mb-4">
+            <a href="{% url 'recipe_edit' recipe.pk %}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Редактировать рецепт
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Изображение рецепта -->
+    {% if recipe.image %}
+        <div class="text-center mb-4">
+            <img src="{{ recipe.image.url }}" class="recipe-image animate-on-scroll rounded" alt="{{ recipe.title }}">
+        </div>
+    {% endif %}
+
+    <!-- Описание рецепта -->
+    <div class="card mb-4 animate-on-scroll">
+        <div class="card-body">
+            <h2 class="card-title">Описание</h2>
+            <p class="card-text">{{ recipe.description }}</p>
+        </div>
+    </div>
+
+    <!-- Время приготовления, готовки и порции -->
+    <div class="row mb-4 animate-on-scroll">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-clock"></i> Время приготовления</h5>
+                    <p class="card-text">{{ recipe.preparation_time }} минут</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-clock"></i> Время готовки</h5>
+                    <p class="card-text">{{ recipe.cooking_time }} минут</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-utensils"></i> Порции</h5>
+                    <p class="card-text">{{ recipe.servings }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ингредиенты -->
+    <div class="card mb-4 animate-on-scroll">
+        <div class="card-body">
+            <h2 class="card-title"><i class="fas fa-list"></i> Ингредиенты</h2>
+            <ul class="list-group">
+                {% for ingredient in recipe.ingredients.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ ingredient.quantity }} {{ ingredient.name }}
+                        <span class="badge bg-primary rounded-pill">{{ forloop.counter }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Процесс приготовления -->
+    <div class="card mb-4 animate-on-scroll">
+        <div class="card-body">
+            <h2 class="card-title"><i class="fas fa-list-ol"></i> Процесс приготовления</h2>
+            <div class="cooking-instructions">
+                {{ recipe.cooking_instructions|linebreaks }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Оценка рецепта -->
+    <div class="card mb-4 animate-on-scroll">
+        <div class="card-body">
+            <h2 class="card-title"><i class="fas fa-star"></i> Оценка</h2>
+            <p class="card-text">
+                Средняя оценка: <strong>{{ recipe.average_rating|default:"Нет оценок" }}</strong>
+            </p>
+            <a href="{% url 'add_rating' pk=recipe.pk %}" class="btn btn-warning">
+                <i class="fas fa-star"></i> Оценить рецепт
+            </a>
+        </div>
+    </div>
+
+    <!-- Комментарии -->
+    <div class="card mb-4 animate-on-scroll">
+        <div class="card-body">
+            <h2 class="card-title"><i class="fas fa-comments"></i> Комментарии</h2>
+            <ul class="list-group mb-4">
+                {% for comment in recipe.comments.all %}
+                    <li class="list-group-item animate-on-scroll">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>{{ comment.author.username }}</strong>
+                            <small class="text-muted">{{ comment.created_at }}</small>
+                        </div>
+                        <p class="mt-2">{{ comment.text }}</p>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">Пока нет комментариев.</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'add_comment' pk=recipe.pk %}" class="btn btn-primary">
+                <i class="fas fa-comment"></i> Добавить комментарий
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .recipe-image {
+        max-width: 100%;
+        max-height: 500px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .cooking-instructions {
+        white-space: pre-line;
+    }
+</style>
+{% endblock %}
